@@ -17,11 +17,15 @@ start_y, end_y = int(height * 0.25), int(height * 0.75)
 start_x, end_x = int(width * 0.25), int(width * 0.75)
 cropped_img = img[start_y:end_y, start_x:end_x]
 
-
 cv2.imwrite("1_rotated.jpg", rotated_img)
 cv2.imwrite("1_brightened.jpg", brightened_img)
 cv2.imwrite("1_cropped.jpg", cropped_img)
 print("All transformations saved successfully!")
+
+cv2.namedWindow("Original Image", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Transform 1: Rotated", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Transform 2: Brightened", cv2.WINDOW_NORMAL)
+cv2.namedWindow("Transform 3: Cropped", cv2.WINDOW_NORMAL)
 
 cv2.imshow("Original Image", img)
 cv2.imshow("Transform 1: Rotated", rotated_img)
