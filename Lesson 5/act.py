@@ -3,7 +3,7 @@ import numpy as np
 
 TITLE = "IMAGE"
 
-def filter(img, filt_type):
+def apply_filter(img, filt_type):
     copy = img.copy()
     if filt_type == "r":
         copy[:,:, 0] = 0
@@ -14,13 +14,13 @@ def filter(img, filt_type):
     elif filt_type == "b":
         copy[:,:, 1] = 0
         copy[:,:, 2] = 0
-    elif filt_type == "ir":
+    elif filt_type == "i":  # Changed from "ir" to a single character
         copy[:,:, 2] = cv2.add(copy[:,:, 2], 50)
-    elif filt_type == "dg":
+    elif filt_type == "d":  # Changed from "dg" to a single character
         copy[:,:, 1] = cv2.subtract(copy[:,:, 1], 50)
     else:
         print("Invalid key")
-        cv2.destroyAllWindows()
+        return None
     return copy
 
 def display(img):
@@ -34,17 +34,26 @@ if img is None:
     print("ERROR: '1.jpg' was not found in this folder!")
     input("Press Enter to close...")
 else:
-    print("Press keys for filter ( r, g, b, ir, dg). Press e to exit")
-    choice = input("Your choice: ")
-    if choice == "e":
-        print("Exiting program")
-    else:
-        filt_img = filter(img, choice)
-        display(filt_img)
+    # Moved terminal input entirely to window-based key presses for a smoother flow
+    print("Click on the image window and press keys for filters:")
+    print(" 'r'=red, 'g'=green, 'b'=blue, 'i'=ir, 'd'=dg. Press 'e' to exit.")
+    
+    display(img) # Display the base image first to accept key presses
+
+    while True:
+        # Wait for a key press continuously
+        key = cv2.waitKey(0) & 0xFF
+        char_key = chr(key).lower()
+
+        if char_key == "e":
+            print("Exiting program")
+            break
         
-        while True:
-            key = cv2.waitKey(0) & 0xFF
-            if key == ord('e'):
-                break
-                
-        cv2.destroyAllWindows()
+        filt_img = apply_filter(img, char_key)
+        
+        # If a valid filter key was pressed, close the old window and open a new one
+        if filt_img is not None:
+            cv2.destroyAllWindows() # Closes the image
+            display(filt_img)       # Reloads the new filter
+
+    cv2.destroyAllWindows()
