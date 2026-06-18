@@ -33,6 +33,7 @@ while True:
     #end the program
     if cv2.waitKey(1) & 0xFF == ord("g"):
         break
+    
 
 cam.release()
 cv2.destroyAllWindows()
