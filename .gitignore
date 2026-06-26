@@ -1,2 +1,3 @@
 ﻿.venv/
 gc_env/
+config.py
